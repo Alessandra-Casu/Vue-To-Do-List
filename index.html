@@ -9,19 +9,39 @@
 </head>
 <body>
 
-    <div id="app">
-        <h1>Todo List</h1>
-        <input v-model="newTodo" placeholder="Add new todo">
-        <button v-on:click="addTodo">Add</button>
-    
-        <ul>
-          <li v-for="(todo, index) in todos" :key="index">
-            {{ todo }}
-            <button v-on:click="deleteTodo(index)">Delete</button>
-          </li>
-        </ul>
-    </div>
+  <div id="root" class="container">
+		<div class="logo">
+			<img src="img/logo.png" alt="Logo Boolean">
+		</div>
 
+		<div class="new-task">
+			<!-- <input @keyup.enter="addTodo" type="text" placeholder="Nuova task" v-model="newTodoNested.content.text"> -->
+			<!-- <input @keyup.enter="addTodo" type="text" placeholder="Nuova task" v-model="newTodo.text"> -->
+			<input @keyup.enter="addTodo" type="text" placeholder="Nuova task" v-model="newTodoText">
+			<button @click="addTodo">Aggiungi</button>
+			<div v-show="inputError" class="error">
+				<small style="color:red">Devi inserire una task di almeno 5 caratteri</small>
+			</div>
+		</div>
+
+		<div class="tasks-container">
+			<ul v-if="todos.length != 0">
+				<li
+					v-for="(todo, i) in todos"
+					:key="todo.text"
+					class="task"
+					@click="toggleDone(todo)"
+				>
+					<span :class="{done: todo.done}">{{ todo.text }}</span>
+					<i class="fas fa-times" @click="deleteItem(i)"></i>
+				</li>
+			</ul>
+			<h2 v-else>Non ci sono task 😎</h2>
+		</div>
+	</div>
+
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<script src="script.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="js/script.js"></script>
 </body>

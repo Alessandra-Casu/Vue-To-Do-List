@@ -1,29 +1,59 @@
 
 
-
 const app = Vue.createApp({
-        data: function(){
-            return{
-                newTodo:'',
-                todos: [],
-            }
-        },
-        methods:{
-            addTodo: function() {
-                if (this.newTodo.trim() !== '') {
-                  this.todos.push(this.newTodo.trim());
-                  this.newTodo = '';
-                }
-              },
-              deleteTodo: function(index) {
-                this.todos.splice(index, 1);
-              }
-        }
-        
-    })
+	data() {
+		return {
+			newTodoText: '',
+			inputError: false,
+			todos: [
+				{
+					text: 'Fare i compiti',
+					done: false,
+				},
+				{
+					text: 'Fare la spesa',
+					done: true,
+				},
+				{
+					text: 'Fare il bucato',
+					done: false,
+				},
+			],
+    };
+	},
+	methods: {
+		addTodo() {
+			// this.todos.unshift({...this.newTodo});
+			// this.newTodo.text = '';
 
-app.mount("#app");   
-    
+			// per fare il deep copy di oggetti innestati senza metodi
+			// const objStr = JSON.stringify(this.newTodoNested);
+			// this.todos.unshift(JSON.parse(objStr));
 
+			// this.todos.unshift({
+			// 	text: this.newTodoText,
+			// 	done: false,
+			// });
 
-  
+			let cleanedTodo = this.newTodoText.trim();
+			if (cleanedTodo.length >= 5) {
+				this.todos.unshift({
+					text: this.newTodoText,
+					done: false,
+				});
+				this.newTodoText = '';
+				this.inputError = false;
+			} else {
+				this.inputError = true;
+			}
+		},
+		deleteItem(index) {
+			this.todos.splice(index, 1);
+		},
+		toggleDone(objTodo) {
+			objTodo.done = !objTodo.done;
+		}
+	},
+});
+
+app.mount('#root');
